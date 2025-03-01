@@ -15,10 +15,14 @@ def show_password():
         messagebox.showerror("Invalid Input", "Please enter a valid number.")
 
 # Function to copy the generated password to the clipboard
-def copy_to_clipboard():
-    root.clipboard_clear()
-    root.clipboard_append(password_label.cget("text"))
-    messagebox.showinfo("Copied", "Password copied to clipboard.")
+def copy_generated_password_to_clipboard():
+    password = password_label.cget("text")
+    if password:
+        root.clipboard_clear()
+        root.clipboard_append(password)
+        messagebox.showinfo("Copied", "Password copied to clipboard.")
+    else:
+        messagebox.showerror("Error", "No password to copy.")
 
 # Function to save the generated password for a specific service
 def save_password():
@@ -123,7 +127,8 @@ button_frame.pack(pady=10)
 generate_button = tk.Button(button_frame, text="Generate Password", font=button_font, command=show_password, bg="#4CAF50", fg="white")
 generate_button.grid(row=0, column=0, padx=10)
 
-copy_button = tk.Button(button_frame, text="Copy Password", font=button_font, command=copy_to_clipboard, bg="#2196F3", fg="white")
+# Update the button command
+copy_button = tk.Button(button_frame, text="Copy Password", font=button_font, command=copy_generated_password_to_clipboard, bg="#2196F3", fg="white")
 copy_button.grid(row=0, column=1, padx=10)
 
 password_label = tk.Label(root, text="", font=password_font, bg="#2E2E2E", fg="#FFFFFF")
