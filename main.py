@@ -143,6 +143,14 @@ unlock_button.pack(pady=10)
 add_password_button = tk.Button(root, text="Add Password", font=button_font, command=add_password, bg="#FF5722", fg="white", state=tk.DISABLED)
 add_password_button.pack(pady=10)
 
+# Create a frame for the version label
+version_frame = tk.Frame(root, bg="#1E1E1E")
+version_frame.pack(side=tk.BOTTOM, anchor=tk.SE, fill=tk.X)
+
+# Create and place the version label
+version_label = tk.Label(version_frame, text="Version 2.0.1", font=("Arial", 8), bg="#1E1E1E", fg="#AAAAAA")
+version_label.pack(side=tk.RIGHT, padx=10, pady=5)
+
 # Run the application
 root.mainloop()
 
