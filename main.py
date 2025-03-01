@@ -4,10 +4,6 @@ from tkinter import simpledialog
 import password_generator
 import password_manager
 import password_display  # Import the password_display module
-from translate_text import load_config, translate_text
-
-# Load the target language from the config file
-target_language = load_config()
 
 # Function to generate and display a password
 def show_password():
@@ -16,54 +12,42 @@ def show_password():
         password = password_generator.generate_password(length)
         password_label.config(text=password)
     except ValueError:
-        error_message = translate_text("Please enter a valid number.", target_language)
-        messagebox.showerror("Invalid Input", error_message)
+        messagebox.showerror("Invalid Input", "Please enter a valid number.")
 
 # Function to copy the generated password to the clipboard
-def copy_specific_password_to_clipboard(password):
+def copy_to_clipboard():
     root.clipboard_clear()
-    root.clipboard_append(password)
-    copied_message = translate_text("Password copied to clipboard.", target_language)
-    messagebox.showinfo("Copied", copied_message)
+    root.clipboard_append(password_label.cget("text"))
+    messagebox.showinfo("Copied", "Password copied to clipboard.")
 
 # Function to save the generated password for a specific service
 def save_password():
-    service_prompt = translate_text("Enter the service name:", target_language)
-    service = simpledialog.askstring("Input", service_prompt)
+    service = simpledialog.askstring("Input", "Enter the service name:")
     password = password_label.cget("text")
     if service and password:
         password_manager.save_password(service, password)
-        saved_message = translate_text("Password saved successfully.", target_language)
-        messagebox.showinfo("Saved", saved_message)
+        messagebox.showinfo("Saved", "Password saved successfully.")
     else:
-        error_message = translate_text("Service name or password is missing.", target_language)
-        messagebox.showerror("Error", error_message)
+        messagebox.showerror("Error", "Service name or password is missing.")
 
 # Function to copy a specific password to the clipboard
-def copy_to_clipboard():
-    password = password_label.cget("text")
+def copy_to_clipboard(password):
     root.clipboard_clear()
     root.clipboard_append(password)
-    copied_message = translate_text("Password copied to clipboard.", target_language)
-    messagebox.showinfo("Copied", copied_message)
+    messagebox.showinfo("Copied", "Password copied to clipboard.")
 
 # Function to unlock the database using the root password
 def unlock_database():
-    root_pass_prompt = translate_text("Enter root password:", target_language)
-    root_pass = simpledialog.askstring("Input", root_pass_prompt, show='*')
+    root_pass = simpledialog.askstring("Input", "Enter root password:", show='*')
     if root_pass:
         entries = password_manager.unlock_database(root_pass)
         if entries:
-            def show_passwords_window(entries):
-                password_display.show_all_passwords(root, entries, reload_passwords,
-                                                    copy_specific_password_to_clipboard, delete_password)
+            show_passwords_window(entries)
             enable_password_entry()
         else:
-            error_message = translate_text("Invalid root password or no entries found.", target_language)
-            messagebox.showerror("Error", error_message)
+            messagebox.showerror("Error", "Invalid root password or no entries found.")
     else:
-        error_message = translate_text("Root password is missing.", target_language)
-        messagebox.showerror("Error", error_message)
+        messagebox.showerror("Error", "Root password is missing.")
 
 # Function to enable password entry after unlocking the database
 def enable_password_entry():
@@ -71,17 +55,13 @@ def enable_password_entry():
 
 # Function to add a new password to the database
 def add_password():
-    service_prompt = translate_text("Enter the service name:", target_language)
-    password_prompt = translate_text("Enter the password:", target_language)
-    service = simpledialog.askstring("Input", service_prompt)
-    password = simpledialog.askstring("Input", password_prompt)
+    service = simpledialog.askstring("Input", "Enter the service name:")
+    password = simpledialog.askstring("Input", "Enter the password:")
     if service and password:
         password_manager.save_password(service, password)
-        saved_message = translate_text("Password saved successfully.", target_language)
-        messagebox.showinfo("Saved", saved_message)
+        messagebox.showinfo("Saved", "Password saved successfully.")
     else:
-        error_message = translate_text("Service name or password is missing.", target_language)
-        messagebox.showerror("Error", error_message)
+        messagebox.showerror("Error", "Service name or password is missing.")
 
 # Function to show passwords window
 def show_passwords_window(entries):
@@ -93,8 +73,7 @@ def reload_passwords():
     if entries:
         show_passwords_window(entries)
     else:
-        error_message = translate_text("No entries found.", target_language)
-        messagebox.showerror("Error", error_message)
+        messagebox.showerror("Error", "No entries found.")
 
 # Function to delete a password
 def delete_password(service, window):
@@ -129,8 +108,7 @@ button_font = ("Arial", 10)
 password_font = ("Arial", 14, "bold")
 
 # Create and place the widgets
-label_text = translate_text("Enter the desired password length:", target_language)
-label = tk.Label(root, text=label_text, font=label_font, bg="#2E2E2E", fg="#FFFFFF")
+label = tk.Label(root, text="Enter the desired password length:", font=label_font, bg="#2E2E2E", fg="#FFFFFF")
 label.pack(pady=10)
 
 entry = tk.Entry(root, font=label_font, bg="#555555", fg="#FFFFFF", insertbackground="#FFFFFF")
@@ -142,27 +120,22 @@ entry.pack(pady=5)
 button_frame = tk.Frame(root, bg="#2E2E2E")
 button_frame.pack(pady=10)
 
-generate_button_text = translate_text("Generate Password", target_language)
-generate_button = tk.Button(button_frame, text=generate_button_text, font=button_font, command=show_password, bg="#4CAF50", fg="white")
+generate_button = tk.Button(button_frame, text="Generate Password", font=button_font, command=show_password, bg="#4CAF50", fg="white")
 generate_button.grid(row=0, column=0, padx=10)
 
-copy_button_text = translate_text("Copy Password", target_language)
-copy_button = tk.Button(button_frame, text=copy_button_text, font=button_font, command=copy_to_clipboard, bg="#2196F3", fg="white")
+copy_button = tk.Button(button_frame, text="Copy Password", font=button_font, command=copy_to_clipboard, bg="#2196F3", fg="white")
 copy_button.grid(row=0, column=1, padx=10)
 
 password_label = tk.Label(root, text="", font=password_font, bg="#2E2E2E", fg="#FFFFFF")
 password_label.pack(pady=20)
 
-save_button_text = translate_text("Save Password", target_language)
-save_button = tk.Button(root, text=save_button_text, font=button_font, command=save_password, bg="#FF5722", fg="white")
+save_button = tk.Button(root, text="Save Password", font=button_font, command=save_password, bg="#FF5722", fg="white")
 save_button.pack(pady=10)
 
-unlock_button_text = translate_text("Unlock Database", target_language)
-unlock_button = tk.Button(root, text=unlock_button_text, font=button_font, command=unlock_database, bg="#9C27B0", fg="white")
+unlock_button = tk.Button(root, text="Unlock Database", font=button_font, command=unlock_database, bg="#9C27B0", fg="white")
 unlock_button.pack(pady=10)
 
-add_password_button_text = translate_text("Add Password", target_language)
-add_password_button = tk.Button(root, text=add_password_button_text, font=button_font, command=add_password, bg="#FF5722", fg="white", state=tk.DISABLED)
+add_password_button = tk.Button(root, text="Add Password", font=button_font, command=add_password, bg="#FF5722", fg="white", state=tk.DISABLED)
 add_password_button.pack(pady=10)
 
 # Run the application
