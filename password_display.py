@@ -1,5 +1,10 @@
 import tkinter as tk
 from tkinter import messagebox
+import webbrowser
+
+def open_url(url):
+    """Function to open a URL in the default web browser"""
+    webbrowser.open_new(url)
 
 def copy_to_clipboard(root, password):
     """Function to copy the password to the clipboard"""
@@ -23,12 +28,16 @@ def show_all_passwords(root, entries, reload_callback, delete_callback):
     button_font = ("Arial", 10)
     password_font = ("Arial", 14, "bold")
 
-    for service, password in entries:
+    for service, password, url in entries:
         frame = tk.Frame(output_window, bg="#2E2E2E")
         frame.pack(fill=tk.X, pady=5)
 
-        password_label = tk.Label(frame, text=f"{service}: {password}", font=password_font, bg="#2E2E2E", fg="#FFFFFF", justify=tk.LEFT)
+        password_label = tk.Label(frame, text=f"{service}: {password} | URL: ", font=password_font, bg="#2E2E2E", fg="#FFFFFF", justify=tk.LEFT)
         password_label.pack(side=tk.LEFT, padx=10)
+
+        url_label = tk.Label(frame, text=url, font=password_font, bg="#2E2E2E", fg="#2196F3", cursor="hand2", justify=tk.LEFT)
+        url_label.pack(side=tk.LEFT, padx=10)
+        url_label.bind("<Button-1>", lambda e, u=url: open_url(u))
 
         copy_button = tk.Button(frame, text="Copy", font=button_font, command=lambda p=password: copy_to_clipboard(root, p), bg="#2196F3", fg="white")
         copy_button.pack(side=tk.RIGHT, padx=10)

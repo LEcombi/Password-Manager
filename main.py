@@ -24,15 +24,16 @@ def copy_generated_password_to_clipboard():
     else:
         messagebox.showerror("Error", "No password to copy.")
 
-# Function to save the generated password for a specific service
+# Function to save the generated password for a specific service with URL
 def save_password():
     service = simpledialog.askstring("Input", "Enter the service name:")
+    url = simpledialog.askstring("Input", "Enter the URL:")
     password = password_label.cget("text")
-    if service and password:
-        password_manager.save_password(service, password)
+    if service and password and url:
+        password_manager.save_password(service, password, url)
         messagebox.showinfo("Saved", "Password saved successfully.")
     else:
-        messagebox.showerror("Error", "Service name or password is missing.")
+        messagebox.showerror("Error", "Service name, password, or URL is missing.")
 
 # Function to copy a specific password to the clipboard
 def copy_to_clipboard(password):
