@@ -4,13 +4,24 @@ from tkinter import messagebox
 from tkinter import simpledialog
 import os
 
-if not os.path.exists("key.key"):
-    messagebox.showerror("Error", "Key file not found." + "\n" + "Please run the setup.py file to generate the key file.")
-    exit()
+if not all(os.path.exists(file) for file in ["key.key", "config.cfg"]):
+    messagebox.showerror("Error", "Key file not found.\nPlease run the setup.py file to generate the key file.")
+    exit("Key file not found.")
+
+if not all(os.path.exists(file) for file in ["password_display.py", "password_manager.py", "password_generator.py"]):
+    messagebox.showerror("Error", "Required files not found.\nPlease download the required files.")
+    exit("Required files not found.")
+
+# Check for icon files
+icon_files = ["key.png", "key.ico"]
+missing_icons = [file for file in icon_files if not os.path.exists(file)]
+if missing_icons:
+    messagebox.showinfo("Info", f"Icon file(s) not found: {', '.join(missing_icons)}")
 
 import password_generator
 import password_manager
-import password_display# Import the password_display module
+import password_display  # Import the password_display module
+
 # Function to generate and display a password
 def show_password():
     try:
@@ -109,7 +120,11 @@ def on_focusout(event):
 # Create the main window
 root = tk.Tk()
 root.title("Password Generator and Manager")
-root.iconbitmap("key.ico")
+
+# Set icon if file exists
+if os.path.exists("key.ico"):
+    root.iconbitmap("key.ico")
+
 root.geometry("400x450")
 # Dark Mode Style
 root.configure(bg="#2E2E2E")
