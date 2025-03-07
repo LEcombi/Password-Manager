@@ -1,4 +1,15 @@
 from cryptography.fernet import Fernet
+import subprocess
+
+# Generate encryption key (store this key securely)
+key = Fernet.generate_key()
+with open('../key.key', 'wb') as keyfile:
+    keyfile.write(key)
+
+print(f"Encryption Key: {key.decode()}")
+
+
+
 import configparser
 
 # Load encryption key from file

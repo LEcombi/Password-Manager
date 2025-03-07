@@ -2,7 +2,7 @@
 This is a simple password generator in Python.
 
 ## Password-Manager
-~~The Password Manager is not Safe Now. Its no Password for the database.~~ Its just a Beta-version
+ Its just a Beta-version
 
 To use the Password Manager, install the following Packages:
 
@@ -10,7 +10,7 @@ To use the Password Manager, install the following Packages:
     pip install tk
     pip install configparser
 
-Run the files **run.py** and **run2.py** to create a Key for the Database.
+Run the file **setup.py** to create a Key for the Database.
 
 Please set a **Password** for the Database in the **run2.py** file.
 

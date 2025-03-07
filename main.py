@@ -1,10 +1,16 @@
 import tkinter as tk
+from platform import system
 from tkinter import messagebox
 from tkinter import simpledialog
+import os
+
+if not os.path.exists("key.key"):
+    messagebox.showerror("Error", "Key file not found." + "\n" + "Please run the setup.py file to generate the key file.")
+    exit()
+
 import password_generator
 import password_manager
-import password_display  # Import the password_display module
-
+import password_display# Import the password_display module
 # Function to generate and display a password
 def show_password():
     try:
@@ -105,7 +111,6 @@ root = tk.Tk()
 root.title("Password Generator and Manager")
 root.iconbitmap("key.ico")
 root.geometry("400x450")
-
 # Dark Mode Style
 root.configure(bg="#2E2E2E")
 label_font = ("Arial", 12, "bold")
