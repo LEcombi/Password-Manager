@@ -3,6 +3,7 @@ from platform import system
 from tkinter import messagebox
 from tkinter import simpledialog
 import os
+import subprocess
 
 # Check for key and config files
 if not all(os.path.exists(file) for file in ["key.key", "config.cfg"]):
@@ -13,17 +14,19 @@ if not all(os.path.exists(file) for file in ["key.key", "config.cfg"]):
 python_files = ["password_display.py", "password_manager.py", "password_generator.py"]
 missing_python_files = [file for file in python_files if not os.path.exists(file)]
 if missing_python_files:
-    messagebox.showerror("Error", f"Required files not found: {', '.join(missing_python_files)}")
+    subprocess.run(["python", "file_downloader.py"])
     exit("Required files not found.")
 
 # Check for icon files
 icon_files = ["key.png", "key.ico"]
 missing_icons = [file for file in icon_files if not os.path.exists(file)]
 if missing_icons:
-    messagebox.showinfo("Info", f"Icon file(s) not found: {', '.join(missing_icons)}")
+    subprocess.run(["python", "file_downloader.py"])
+
+
 import password_generator
 import password_manager
-import password_display  # Import the password_display module
+import password_display
 
 # Function to generate and display a password
 def show_password():
